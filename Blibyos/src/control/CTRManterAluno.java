@@ -20,6 +20,8 @@ public class CTRManterAluno {
 	private StringProperty email = new SimpleStringProperty("");
 	private StringProperty telefone = new SimpleStringProperty("");
 	private StringProperty ra = new SimpleStringProperty("");
+	private StringProperty status = new SimpleStringProperty("APTO");
+	private StringProperty pesquisa = new SimpleStringProperty("");
 	
 	private ObservableList<Aluno> lista =  FXCollections.observableArrayList();
 	
@@ -33,6 +35,7 @@ public class CTRManterAluno {
 
 	    public Aluno toEntity() { 
 	        Aluno a = new Aluno();
+	        a.setStatus(status.get());
 	        a.setNome( nome.get() );
 	        a.setTelefone( telefone.get() );
 	        a.setEmail( email.get() );
@@ -43,8 +46,8 @@ public class CTRManterAluno {
 	    public void gravar() { 
 	        Aluno a = toEntity();
 	            try {
-	              if (pesquisar()) { 
-					dao.atualizar(ra.get(), a);
+	              if (pesquisarExistencia()) { 
+					dao.atualizar(a);
 	             } else { 
 	 	            dao.adicionar(a);
 	 	        }
@@ -63,12 +66,23 @@ public class CTRManterAluno {
 	        ra.set(a.getRa());
 	    }
 
-	    
+	    public ObservableList<Aluno> pesquisarAluno(){
+	    	
+	    	ObservableList<Aluno> al = FXCollections.observableArrayList();
+	    	try {
+				al.addAll(dao.pesquisarPorRa(pesquisa.get()));
+				return al;
+			} catch (AlunoException e) {
+				e.printStackTrace();
+			}
+	    	return al;
+	    }
 
-	    public boolean pesquisar() { 
+	    public boolean pesquisarExistencia() { 
+	    	atualizarLista();
 	        for (Aluno a : lista) { 
 	            if (a.getRa().contains( ra.get() )) { 
-	                fromEntity(a);
+	                
 	                return true;
 	            }
 	        }
@@ -81,6 +95,7 @@ public class CTRManterAluno {
 				tempLista = dao.pesquisarTodos();
 				lista.clear();
 		        lista.addAll( tempLista );
+		        System.out.println("Lista atualizada com sucesso");
 			} catch (AlunoException e) {
 				e.printStackTrace();
 			}
@@ -90,7 +105,12 @@ public class CTRManterAluno {
 	    
 	    
 	    public void excluir(Aluno p) {
-	    	lista.remove(p);
+	    	try {
+				dao.remover(p.getRa());
+				atualizarLista();
+			} catch (AlunoException e) {
+				e.printStackTrace();
+			}
 	    }
 
 		public ObservableList<Aluno> getLista() {
@@ -115,6 +135,12 @@ public class CTRManterAluno {
 	    
 	    public StringProperty raProperty() {
 	    	return this.ra;
+	    }
+	    public StringProperty statusProperty() {
+	    	return this.status;
+	    }
+	    public StringProperty pesquisaProperty() {
+	    	return this.pesquisa;
 	    }
 }
 

@@ -6,25 +6,21 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import entity.Aluno;
+import entity.Professor;
 
-public class AlunoDaoImpl extends DBConnection implements AlunoDAO {
+public class ProfessorDaoImpl extends DBConnection implements ProfessorDAO{
 	
-	public AlunoDaoImpl() {
-		super();
-	}
 	@Override
-	public void adicionar(Aluno al) throws AlunoException {
+	public void adicionar(Professor po) throws ProfessorException {
 		 try {
-	            String sql = "INSERT INTO aluno (ra, status, nome, email, telefone) "+
+	            String sql = "INSERT INTO professor (registro, nome, email, telefone) "+
 	            "VALUES (?, ?, ?, ?, ?)";
 
 	            PreparedStatement stmt = con.prepareStatement(sql);
-	            stmt.setString(1, al.getRa());
-	            stmt.setString(2, al.getStatus());
-	            stmt.setString(3, al.getNome());
-	            stmt.setString(4, al.getEmail());
-	            stmt.setString(5, al.getTelefone());
+	            stmt.setString(1, po.getRegistro());
+	            stmt.setString(2, po.getNome());
+	            stmt.setString(3, po.getEmail());
+	            stmt.setString(4, po.getTelefone());
 	            int linhas = stmt.executeUpdate();
 	            System.out.println("Insert executado com sucesso, foram " + 
 	            " afetadas " + linhas + " linhas");
@@ -34,22 +30,21 @@ public class AlunoDaoImpl extends DBConnection implements AlunoDAO {
 	}
 
 	@Override
-	public List<Aluno> pesquisarTodos() throws AlunoException {
-		 List<Aluno> lista = new ArrayList<>();
+	public List<Professor> pesquisarTodos() throws ProfessorException {
+		 List<Professor> lista = new ArrayList<>();
 
 	        try {
-	            String sql = "SELECT * FROM aluno ";
+	            String sql = "SELECT * FROM professor ";
 	            PreparedStatement stmt = con.prepareStatement(sql);
 	            ResultSet rs = stmt.executeQuery();
 	            System.out.println("Select executado com sucesso");
 
 	            while (rs.next()) { 
-	                Aluno c = new Aluno();
+	                Professor c = new Professor();
 	                c.setNome(rs.getString("nome"));
 	                c.setTelefone(rs.getString("telefone"));
 	                c.setEmail(rs.getString("email"));
-	                c.setRa(rs.getString("ra"));
-	                c.setStatus(rs.getString("status"));
+	                c.setRegistro(rs.getString("registro"));
 	                lista.add(c);
 	            }
 	        } catch(SQLException e) { 
@@ -60,24 +55,23 @@ public class AlunoDaoImpl extends DBConnection implements AlunoDAO {
 	}
 
 	@Override
-	public List<Aluno> pesquisarPorRa(String ra) throws AlunoException {
-		List<Aluno> lista = new ArrayList<>();
+	public List<Professor> pesquisarPorReg(String reg) throws ProfessorException {
+		List<Professor> lista = new ArrayList<>();
 		try {
-            String sql = "SELECT * FROM aluno " +
-            				 "WHERE ra=?";
+            String sql = "SELECT * FROM professor " +
+            				 "WHERE registro=?";
             PreparedStatement stmt = con.prepareStatement(sql);
-            stmt.setString(1, ra);
+            stmt.setString(1, reg);
             ResultSet rs = stmt.executeQuery();
-            System.out.println("Select por RA executado com sucesso");
+            System.out.println("Select por Registro executado com sucesso");
 
             while (rs.next()) { 
-                Aluno c = new Aluno();
-                c.setNome(rs.getString("nome"));
-                c.setTelefone(rs.getString("telefone"));
-                c.setEmail(rs.getString("email"));
-                c.setRa(rs.getString("ra"));
-                c.setStatus(rs.getString("status"));
-                lista.add(c);
+                Professor p = new Professor();
+                p.setNome(rs.getString("nome"));
+                p.setTelefone(rs.getString("telefone"));
+                p.setEmail(rs.getString("email"));
+                p.setRegistro(rs.getString("registro"));
+                lista.add(p);
             }
         } catch(SQLException e) { 
             e.printStackTrace();
@@ -86,12 +80,12 @@ public class AlunoDaoImpl extends DBConnection implements AlunoDAO {
 	}
 
 	@Override
-	public void remover(String ra) throws AlunoException {
+	public void remover(String reg) throws ProfessorException {
 	  try {
-		String sql = "DELETE FROM aluno "+
-	            "WHERE ra=?";
+		String sql = "DELETE FROM professor "+
+	            "WHERE registro=?";
 		PreparedStatement stmt = con.prepareStatement(sql);
-        stmt.setString(1, ra);
+        stmt.setString(1, reg);
         int linhas = stmt.executeUpdate();
         System.out.println("Remoção executada com sucesso, foram " + 
                 " afetadas " + linhas + " linhas");
@@ -102,17 +96,16 @@ public class AlunoDaoImpl extends DBConnection implements AlunoDAO {
 	}
 
 	@Override
-	public void atualizar(Aluno al) throws AlunoException {
+	public void atualizar(Professor pro) throws ProfessorException {
 		try {
-            String sql = "UPDATE aluno SET nome=?, telefone=?, email=?, status=? "+
-            "WHERE ra=?";
+            String sql = "UPDATE professor SET nome=?, email=?, telefone=? "+
+            "WHERE id=?";
 
             PreparedStatement stmt = con.prepareStatement(sql);
-            stmt.setString(1, al.getNome());
-            stmt.setString(2, al.getTelefone());
-            stmt.setString(3, al.getEmail());
-            stmt.setString(4, al.getStatus());
-            stmt.setString(5, al.getRa());
+            stmt.setString(1, pro.getNome());
+            stmt.setString(2, pro.getEmail());
+            stmt.setString(3, pro.getTelefone());
+            stmt.setString(4, pro.getRegistro());
             int linhas = stmt.executeUpdate();
             System.out.println("Atualização executada com sucesso, foram " + 
             " afetadas " + linhas + " linhas");

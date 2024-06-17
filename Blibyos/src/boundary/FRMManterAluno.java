@@ -2,7 +2,8 @@ package boundary;
 
 import control.CTRManterAluno;
 import entity.Aluno;
-
+import javafx.beans.binding.Bindings;
+import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -45,7 +46,8 @@ public class FRMManterAluno implements Boundary{
 		private Label nomeAluno = new Label("Nome do aluno:");
 		private TextField txtNmAluno = new TextField();
 		private Button pesquisar = new Button("Pesquisar");
-		private Button cadastrar = new Button("Cadastrar Aluno");
+		private Button cadastrar = new Button("Cadastrar/Alterar Aluno");
+		private Button redefinir = new Button("Redefinir");
 		
 		
 		
@@ -55,7 +57,7 @@ public class FRMManterAluno implements Boundary{
 		
 		
 		//Gerando a TableView
-		public void generateTable() { 
+		public void generateTable(ObservableList<Aluno> lista) { 
 			
 			//Adicionando colunas
 	        TableColumn<Aluno, String> colAluno = new TableColumn<>("Alunos");
@@ -105,10 +107,13 @@ public class FRMManterAluno implements Boundary{
 
 	        table.getColumns().clear();
 	        table.getColumns().addAll(colAluno , colRegistro, colStatus, colAcoes);
-	        table.setItems( control.getLista() );
+	        table.setItems( lista );
 	        colAcoes.setCellFactory( callback );
 		}
 		
+		public void bind() { 
+	        Bindings.bindBidirectional(txtNmAluno.textProperty(), control.pesquisaProperty());
+		}
 		
 		@Override
 		public Pane render() {
@@ -123,9 +128,16 @@ public class FRMManterAluno implements Boundary{
 	        grid.add(txtNmAluno, 2, 1);
 	        grid.add(pesquisar, 2, 2);
 	        grid.add(cadastrar, 3, 3);
-	        generateTable();
+	        grid.add(redefinir, 2, 3);
+	        bind();
+	        generateTable(control.getLista());
 	        
 	        cadastrar.setOnAction(e -> executarComando("ABRIR CADALUNO"));
+	        pesquisar.setOnAction( e ->
+	        {
+	        	generateTable(control.pesquisarAluno());
+	        });
+	        redefinir.setOnAction( e-> generateTable(control.getLista()));
 
 	        panePrincipal.getChildren().add(table);
 	        panePrincipal.getChildren().add(grid);
