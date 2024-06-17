@@ -6,9 +6,10 @@ public class Livro {
 	private String nome;
 	private String descricao;
 	private String status;
-	private LocalDate anoEscrito;
+	private int anoEscrito;
 	private String genero;
 	private String isbn;
+	private int idAutor;
 	
 	public String getNome() {
 		return nome;
@@ -28,10 +29,10 @@ public class Livro {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	public LocalDate getAnoEscrito() {
+	public int getAnoEscrito() {
 		return anoEscrito;
 	}
-	public void setAnoEscrito(LocalDate anoEscrito) {
+	public void setAnoEscrito(int anoEscrito) {
 		this.anoEscrito = anoEscrito;
 	}
 	public String getGenero() {
@@ -45,6 +46,12 @@ public class Livro {
 	}
 	public void setIsbn(String isbn) {
 		this.isbn = isbn;
+	}
+	public int getIdAutor() {
+		return idAutor;
+	}
+	public void setIdAutor(int idAutor) {
+		this.idAutor = idAutor;
 	}
 	
 }

@@ -1,15 +1,15 @@
 package entity;
 
 public class Autor {
-	private String id;
+	
+	private int id;
 	private String nome;
-	private String sobrenome;
 	private String biografia;
 	
-	public String getId() {
+	public int getId() {
 		return id;
 	}
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	public String getNome() {
@@ -18,12 +18,8 @@ public class Autor {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	public String getSobrenome() {
-		return sobrenome;
-	}
-	public void setSobrenome(String sobrenome) {
-		this.sobrenome = sobrenome;
-	}
+	
+	
 	public String getBiografia() {
 		return biografia;
 	}
