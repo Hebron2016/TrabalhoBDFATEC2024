@@ -1,4 +1,4 @@
-Trabalho feito por: Henrique Hebron, Kevin Mantovani, Guilherme Frigueiredo
+Trabalho realizado por: Henrique Hebron, Kevin Mantovani, Guilherme Frigueiredo
 
 
 Trabalho Semestral – Banco de Dados   
