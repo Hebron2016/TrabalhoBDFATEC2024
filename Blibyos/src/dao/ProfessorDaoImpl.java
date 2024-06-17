@@ -14,7 +14,7 @@ public class ProfessorDaoImpl extends DBConnection implements ProfessorDAO{
 	public void adicionar(Professor po) throws ProfessorException {
 		 try {
 	            String sql = "INSERT INTO professor (registro, nome, email, telefone) "+
-	            "VALUES (?, ?, ?, ?, ?)";
+	            "VALUES (?, ?, ?, ?)";
 
 	            PreparedStatement stmt = con.prepareStatement(sql);
 	            stmt.setString(1, po.getRegistro());

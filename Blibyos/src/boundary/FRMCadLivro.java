@@ -98,15 +98,15 @@ public class FRMCadLivro implements Boundary{
 	      grid.add(btCadastrar, 1, 4);
 	      grid.add(btCancelar, 0, 4);
 	      bind();
-	      btCadastrar.setOnAction(e -> {
-	    	  if(control.toEntity()) {
-	    		  executarComando("ABRIR LIVRO");}
-	    	  else {
-	    		  if (!gridErro) {
-	    		  grid.add(lblErro, 5, 4);
-	    		  gridErro = true;}
-	    	  }
-	      });
+	      //btCadastrar.setOnAction(e -> {
+	    	  //if(control.toEntity()) {
+	    		 // executarComando("ABRIR LIVRO");}
+	    	 // else {
+	    		 // if (!gridErro) {
+	    		 // grid.add(lblErro, 5, 4);
+	    	//	  gridErro = true;}
+	    	 // }
+	      //});
 		  btCancelar.setOnAction(e -> {executarComando("ABRIR LIVRO"); gridErro = false;});
 	      
 	      return grid;

@@ -81,13 +81,14 @@ public class CTRManterAluno {
 	    public boolean pesquisarExistencia() { 
 	    	atualizarLista();
 	        for (Aluno a : lista) { 
-	            if (a.getRa().contains( ra.get() )) { 
+	            if (a.getRa().equals( ra.get() )) { 
 	                
 	                return true;
 	            }
 	        }
 	       return false;
 	    }
+	    
 	    
 	    public void atualizarLista() { 
 	        List<Aluno> tempLista = new ArrayList<>();

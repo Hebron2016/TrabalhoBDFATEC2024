@@ -24,6 +24,7 @@ public class TelaInicial extends Application implements Executor{
 	private Boundary cadLivro = new FRMCadLivro();
 	private Boundary cadProfessor = new FRMCadProfessor();
 	private Boundary cadReserva = new FRMCadReserva();
+	private Boundary creditos = new Creditos();
 	
 	private MenuBar menu = new MenuBar();
     private BorderPane bp = new BorderPane();
@@ -40,6 +41,7 @@ public class TelaInicial extends Application implements Executor{
 		cadLivro.setExecutor(this);
 		cadProfessor.setExecutor(this);
 		cadReserva.setExecutor(this);
+		creditos.setExecutor(this);
         telas.put("AUTOR", telaAutor);
         telas.put("ALUNO", telaAluno);
         telas.put("LIVRO", telaLivro);
@@ -50,6 +52,7 @@ public class TelaInicial extends Application implements Executor{
         telas.put("CADLIVRO", cadLivro);
         telas.put("CADPROFESSOR", cadProfessor);
         telas.put("CADRESERVA", cadReserva);
+        telas.put("CREDITOS", creditos);
     }
 	
 	@Override
@@ -62,8 +65,9 @@ public class TelaInicial extends Application implements Executor{
 		//Configurando o menu
 		Menu menuGerenciar = new Menu("Gerenciar");
 		Menu menuOpcao = new Menu("Opções");
-		Menu menuCreditos = new Menu("Créditos");
+		Menu menuAjuda = new Menu("Ajuda");
 		
+		MenuItem creditos = new MenuItem("Créditos");
 		MenuItem sair = new MenuItem("Sair");
 		MenuItem aluno = new MenuItem("Alunos");
 		MenuItem autor = new MenuItem("Autores");
@@ -71,12 +75,14 @@ public class TelaInicial extends Application implements Executor{
 		MenuItem professor = new MenuItem("Professores");
 		MenuItem reserva = new MenuItem("Reservas");
 		
+		menuAjuda.getItems().add(creditos);
 		menuGerenciar.getItems().addAll(aluno, autor, livro, professor, reserva);
 		menuOpcao.getItems().add(sair);
-		menu.getMenus().addAll(menuOpcao,menuGerenciar, menuCreditos);
+		menu.getMenus().addAll(menuOpcao,menuGerenciar, menuAjuda);
 		
 		sair.setOnAction(e -> executar("SAIR"));
 		
+		creditos.setOnAction(e -> executar("ABRIR CREDITOS"));
 		reserva.setOnAction(e -> executar("ABRIR RESERVA"));
 		aluno.setOnAction(e -> executar("ABRIR ALUNO"));
 		autor.setOnAction(e -> executar("ABRIR AUTOR"));
@@ -85,6 +91,7 @@ public class TelaInicial extends Application implements Executor{
 		
         Scene scn = new Scene(bp, 800, 600);
         
+        stage.setTitle("Gerenciamento de biblioteca");
         stage.setScene(scn);
 		stage.show();
 	}

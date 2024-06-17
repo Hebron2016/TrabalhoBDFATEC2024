@@ -1,9 +1,12 @@
 package boundary;
 
 import control.CTRManterProfessor;
+import entity.Aluno;
 import entity.Professor;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -43,10 +46,11 @@ public class FRMManterProfessor implements Boundary{
 	}
 
 		
-		private Label nomeProfessor = new Label("Nome do professor:");
+		private Label nomeProfessor = new Label("RA do professor:");
 		private TextField txtNmProf = new TextField();
 		private Button pesquisar = new Button("Pesquisar");
-		private Button cadastrar = new Button("Cadastrar Professor");
+		private Button cadastrar = new Button("Cadastrar/Alterar Professor");
+		private Button redefinir = new Button("Redefinir");
 		
 		
 		
@@ -56,14 +60,14 @@ public class FRMManterProfessor implements Boundary{
 		
 		
 		//Gerando a TableView
-		public void generateTable() { 
+		public void generateTable(ObservableList<Professor> lista) { 
 			
 			//Adicionando colunas
 	        TableColumn<Professor, String> colProfessor = new TableColumn<>("Professores");
-	        colProfessor.setCellValueFactory( data -> new SimpleStringProperty (data.getValue().getNome()));
+	        colProfessor.setCellValueFactory( new PropertyValueFactory<>("nome"));
 	        
 	        TableColumn<Professor, String> colRegistro = new TableColumn<>("Registro");
-	        colRegistro.setCellValueFactory( data -> new SimpleStringProperty (data.getValue().getRegistro()));
+	        colRegistro.setCellValueFactory( new PropertyValueFactory<>("registro"));
 
 	        table
 	        .getSelectionModel()
@@ -103,14 +107,17 @@ public class FRMManterProfessor implements Boundary{
 
 	        table.getColumns().clear();
 	        table.getColumns().addAll(colProfessor , colRegistro, colAcoes);
-	        table.setItems( control.getLista() );
+	        table.setItems( lista );
 	        colAcoes.setCellFactory( callback );
 		}
 		
+		public void bind() { 
+	        Bindings.bindBidirectional(txtNmProf.textProperty(), control.pesquisaProperty());
+		}
 		
 		@Override
 		public Pane render() {
-			
+			control.atualizarLista();
 			HBox panePrincipal = new HBox();
 	        Scene scn = new Scene( panePrincipal, 500, 300);
 	        GridPane grid = new GridPane();
@@ -121,9 +128,16 @@ public class FRMManterProfessor implements Boundary{
 	        grid.add(txtNmProf, 2, 1);
 	        grid.add(pesquisar, 2, 2);
 	        grid.add(cadastrar, 3, 3);
-	        generateTable();
+	        grid.add(redefinir, 2, 3);
+	        bind();
+	        generateTable(control.getLista());
 	        
 	        cadastrar.setOnAction(e -> executarComando("ABRIR CADPROFESSOR"));
+	        pesquisar.setOnAction( e ->
+	        {
+	        	generateTable(control.pesquisarProfessor());
+	        });
+	        redefinir.setOnAction( e-> generateTable(control.getLista()));
 	        
 	        panePrincipal.getChildren().add(table);
 	        panePrincipal.getChildren().add(grid);

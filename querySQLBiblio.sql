@@ -47,12 +47,13 @@ CREATE TABLE reserva(
 	dataDevolucao	DATE,
 	dataRetirada	DATE,
 	status			VARCHAR(25),
-	identificacao	VARCHAR(25),
-	nomeLivro		VARCHAR(90)	
+	identRa			VARCHAR(25),
+	nomeLivro		VARCHAR(90),
+	identReg		VARCHAR(25)
 
 	FOREIGN KEY (nomeLivro) REFERENCES livro(nome),
-	FOREIGN KEY (identificacao) REFERENCES aluno (ra),
-	FOREIGN KEY (identificacao) REFERENCES professor(registro),
+	FOREIGN KEY (identRa) REFERENCES aluno (ra),
+	FOREIGN KEY (identReg) REFERENCES professor(registro),
 	PRIMARY KEY(id)
 )
 SELECT * FROM aluno

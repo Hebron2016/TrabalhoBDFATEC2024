@@ -43,7 +43,7 @@ public class FRMManterAluno implements Boundary{
 	}
 
 		
-		private Label nomeAluno = new Label("Nome do aluno:");
+		private Label nomeAluno = new Label("RA do aluno:");
 		private TextField txtNmAluno = new TextField();
 		private Button pesquisar = new Button("Pesquisar");
 		private Button cadastrar = new Button("Cadastrar/Alterar Aluno");

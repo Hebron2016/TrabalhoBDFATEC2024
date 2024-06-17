@@ -8,8 +8,8 @@ public class DBConnection {
 	
 	protected static final String JDBC_URL = 
     "jdbc:sqlserver://DESKTOP-3D7FB7H;Database=biblioteca;encrypt=true;TrustServerCertificate=true;IntegratedSecurity=true";
-	protected static final String JDBC_USER = "root";
-	protected static final String JDBC_PASS = "123456";
+	protected static final String JDBC_USER = ""; //Com o IntegratedSecurity não precisa disso.
+	protected static final String JDBC_PASS = "";
 	protected Connection con;
 	
 	public DBConnection(){ 

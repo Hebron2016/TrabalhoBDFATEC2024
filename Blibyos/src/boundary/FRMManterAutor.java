@@ -2,6 +2,8 @@ package boundary;
 
 import control.CTRManterAutor;
 import entity.Autor;
+import javafx.beans.binding.Bindings;
+import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -45,8 +47,8 @@ public class FRMManterAutor implements Boundary{
 		private Label nomeAutor = new Label("Nome do autor:");
 		private TextField txtNmAutor = new TextField();
 		private Button pesquisar = new Button("Pesquisar");
-		private Button cadastrar = new Button("Cadastrar Autor");
-		
+		private Button cadastrar = new Button("Cadastrar/Atualizar Autor");
+		private Button redefinir = new Button("Redefinir");
 		
 		
 		private TableView<Autor> table = new TableView<>();
@@ -55,13 +57,18 @@ public class FRMManterAutor implements Boundary{
 		
 		
 		//Gerando a TableView
-		public void generateTable() { 
+		public void generateTable(ObservableList<Autor> lista) { 
 			
 			//Adicionando colunas
+			TableColumn<Autor, String> colId = new TableColumn<>("ID");
+	        colId.setCellValueFactory( new PropertyValueFactory<>("id"));
+	        
 	        TableColumn<Autor, String> colAutor = new TableColumn<>("Autores");
 	        colAutor.setCellValueFactory( new PropertyValueFactory<>("nome"));
 	        
-
+	        TableColumn<Autor, String> colBio = new TableColumn<>("Biografia");
+	        colBio.setCellValueFactory( new PropertyValueFactory<>("biografia"));
+	        
 	        table
 	        .getSelectionModel()
 	        .selectedItemProperty().addListener(
@@ -99,15 +106,18 @@ public class FRMManterAutor implements Boundary{
 	        };
 
 	        table.getColumns().clear();
-	        table.getColumns().addAll(colAutor, colAcoes);
-	        table.setItems( control.getLista() );
+	        table.getColumns().addAll(colId, colAutor, colBio, colAcoes);
+	        table.setItems( lista );
 	        colAcoes.setCellFactory( callback );
 		}
 		
+		public void bind() { 
+	        Bindings.bindBidirectional(txtNmAutor.textProperty(), control.pesquisaProperty());
+		}
 		
 		@Override
 		public Pane render() {
-			
+			control.atualizarLista();
 			BorderPane panePrincipal = new BorderPane();
 	        Scene scn = new Scene( panePrincipal, 500, 300);
 	        GridPane grid = new GridPane();
@@ -116,11 +126,19 @@ public class FRMManterAutor implements Boundary{
 	        grid.add(nomeAutor, 2, 0);
 	        grid.add(txtNmAutor, 2, 1);
 	        grid.add(pesquisar, 2, 2);
-	        grid.add(cadastrar, 3, 3);
-	        generateTable();
+	        grid.add(cadastrar, 3, 2);
+	        grid.add(redefinir, 4, 2);
+	        bind();
+	        generateTable(control.getLista());
 	        
 	        cadastrar.setOnAction(e -> executarComando("ABRIR CADAUTOR"));
-
+	        pesquisar.setOnAction( e ->
+	        {
+	        	generateTable(control.pesquisarAutor());
+	        });
+	        
+	        redefinir.setOnAction( e-> generateTable(control.getLista()));
+	        
 	        panePrincipal.setTop(grid);
 	        panePrincipal.setCenter(table);
 			return panePrincipal;

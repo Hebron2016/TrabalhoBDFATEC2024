@@ -38,24 +38,7 @@ public class CTRManterLivro {
 	        isbn.set("");
 	    }
 
-	    public boolean toEntity() { 
-	    	int idAutor = ctrlAutor.getIDAutor(nomeAutor.get());
-	    	if (idAutor != -1) {
-	    		
-	        Livro a = new Livro();
-	        a.setNome( nome.get() );
-	        a.setIdAutor( idAutor );
-	        a.setDescricao( descricao.get() );
-	        a.setStatus( status.get() );
-	        a.setAnoEscrito( anoEscrito.get() );
-	        a.setGenero(genero.get());
-	        a.setIsbn(isbn.get());
-	        lista.add(a);
-	        System.out.println("Livro cadastrado");
-	        return true;
-	    }
-	    	return false;
-	    	}
+	    
 
 	    
 
