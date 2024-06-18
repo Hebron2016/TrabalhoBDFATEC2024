@@ -1,7 +1,10 @@
 package boundary;
 
 import control.CTRManterLivro;
+import entity.Aluno;
 import entity.Livro;
+import javafx.beans.binding.Bindings;
+import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -42,10 +45,11 @@ public class FRMManterLivro implements Boundary{
 	}
 
 		
-		private Label nomeLivro = new Label("Nome do Livro:");
+		private Label nomeLivro = new Label("ISBN do Livro:");
 		private TextField txtNmLivro = new TextField();
 		private Button pesquisar = new Button("Pesquisar");
-		private Button cadastrar = new Button("Cadastrar Livro");
+		private Button cadastrar = new Button("Cadastrar/Alterar Livro");
+		private Button redefinir = new Button("Redefinir");
 		
 		
 		
@@ -55,14 +59,14 @@ public class FRMManterLivro implements Boundary{
 		
 		
 		//Gerando a TableView
-		public void generateTable() { 
+		public void generateTable(ObservableList<Livro> lista) { 
 			
 			//Adicionando colunas
 	        TableColumn<Livro, String> colLivro = new TableColumn<>("Livros");
 	        colLivro.setCellValueFactory( new PropertyValueFactory<Livro, String>("nome"));
 	        
-	        TableColumn<Livro, String> colISBM = new TableColumn<>("Livros");
-	        colISBM.setCellValueFactory( new PropertyValueFactory<Livro, String>("isbm"));
+	        TableColumn<Livro, String> colISBN = new TableColumn<>("ISBN");
+	        colISBN.setCellValueFactory( new PropertyValueFactory<Livro, String>("isbn"));
 	        
 	        TableColumn<Livro, String> colDescricao = new TableColumn<>("Descrição");
 	        colDescricao.setCellValueFactory( new PropertyValueFactory<Livro, String>("descricao"));
@@ -99,15 +103,18 @@ public class FRMManterLivro implements Boundary{
 	        };
 
 	        table.getColumns().clear();
-	        table.getColumns().addAll(colLivro, colISBM, colDescricao, colStatus, colAcoes);
-	        table.setItems( control.getLista() );
+	        table.getColumns().addAll(colLivro, colISBN, colDescricao, colStatus, colAcoes);
+	        table.setItems( lista );
 	        colAcoes.setCellFactory( callback );
 		}
 		
+		public void bind() { 
+	        Bindings.bindBidirectional(txtNmLivro.textProperty(), control.pesquisaProperty());
+		}
 		
 		@Override
 		public Pane render() {
-			
+			control.atualizarLista();
 			BorderPane panePrincipal = new BorderPane();
 	        Scene scn = new Scene( panePrincipal, 500, 300);
 	        GridPane grid = new GridPane();
@@ -117,10 +124,17 @@ public class FRMManterLivro implements Boundary{
 	        grid.add(txtNmLivro, 2, 1);
 	        grid.add(pesquisar, 2, 2);
 	        grid.add(cadastrar, 3, 2);
-	        generateTable();
+	        grid.add(redefinir, 2, 3);
+	        bind();
+	        generateTable(control.getLista());
 	        
 	        cadastrar.setOnAction(e -> executarComando("ABRIR CADLIVRO"));
-
+	        pesquisar.setOnAction( e ->
+	        {
+	        	generateTable(control.pesquisarLivro());
+	        });
+	        redefinir.setOnAction( e-> generateTable(control.getLista()));
+	        
 	        panePrincipal.setTop(grid);
 	        panePrincipal.setCenter(table);
 			return panePrincipal;

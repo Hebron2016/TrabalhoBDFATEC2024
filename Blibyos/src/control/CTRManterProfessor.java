@@ -93,6 +93,17 @@ public class CTRManterProfessor {
 	       return false;
 	    }
 	    
+	    public boolean pesquisarExistencia(String reg) { 
+	    	atualizarLista();
+	        for (Professor p : lista) { 
+	            if (p.getRegistro().equals( reg )) { 
+	                
+	                return true;
+	            }
+	        }
+	       return false;
+	    }
+	    
 	    public void atualizarLista() { 
 	        List<Professor> tempLista = new ArrayList<>();
 	        try {

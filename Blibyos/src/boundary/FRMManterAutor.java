@@ -119,7 +119,6 @@ public class FRMManterAutor implements Boundary{
 		public Pane render() {
 			control.atualizarLista();
 			BorderPane panePrincipal = new BorderPane();
-	        Scene scn = new Scene( panePrincipal, 500, 300);
 	        GridPane grid = new GridPane();
 	        grid.setHgap(10);
 	        grid.setVgap(10);

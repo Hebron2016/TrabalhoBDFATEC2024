@@ -89,6 +89,17 @@ public class CTRManterAluno {
 	       return false;
 	    }
 	    
+	    public boolean pesquisarExistencia(String ra) { 
+	    	atualizarLista();
+	        for (Aluno a : lista) { 
+	            if (a.getRa().equals( ra )) { 
+	                
+	                return true;
+	            }
+	        }
+	       return false;
+	    }
+	    
 	    
 	    public void atualizarLista() { 
 	        List<Aluno> tempLista = new ArrayList<>();

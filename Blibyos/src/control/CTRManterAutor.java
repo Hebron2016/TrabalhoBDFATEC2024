@@ -81,7 +81,16 @@ public class CTRManterAutor {
 		nome.set(a.getNome());
 		id.set(a.getId());
 	}
-
+	
+	public int getFirstID(String nome) {
+		atualizarLista();
+		for (Autor a : lista) {
+			if (a.getNome().equals(nome)) {
+				return a.getId();
+			}
+		}
+		return -1;
+	}
 
 	public ObservableList<Autor> pesquisarAutor() {
 

@@ -14,7 +14,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.beans.property.SimpleStringProperty;
 
 public class FRMCadAluno implements Boundary {
 
@@ -59,7 +58,7 @@ public class FRMCadAluno implements Boundary {
 	private TextField txtTelefone = new TextField();
 	private Label lblTelefone = new Label("Telefone:");
 
-	private ComboBox<String> status = new ComboBox();
+	private ComboBox<String> status = new ComboBox<>();
 	private Label lblStatus = new Label("Status: ");
 
 	private Button btCancelar = new Button("Cancelar");

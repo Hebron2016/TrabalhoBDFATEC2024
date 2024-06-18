@@ -1,12 +1,13 @@
 package boundary;
 
-import javafx.scene.Scene;
+
+import javafx.collections.ObservableList;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -39,9 +40,11 @@ public class FRMManterReserva implements Boundary{
 		
 	}
 	
-	private Label identificacao = new Label("RA/Registro: ");
-	private TextField txtIdent = new TextField();
+	private Label data = new Label("Filtrar por data de entrega: ");
+	private DatePicker dtDev = new DatePicker();
+	
 	private Button pesquisar = new Button("Pesquisar");
+	private Button redefinir = new Button("Redefinir");
 	private Button cadastrar = new Button("Cadastrar Reserva");
 	
 	private TableView<Reserva> table = new TableView<>();
@@ -50,20 +53,29 @@ public class FRMManterReserva implements Boundary{
 	
 	
 	//Gerando a TableView
-	public void generateTable() { 
+	public void generateTable(ObservableList<Reserva> lista) { 
 		
 		//Adicionando colunas
-        TableColumn<Reserva, String> colIdentificacao = new TableColumn<>("Identificação (RA/Registro)");
-        colIdentificacao.setCellValueFactory( new PropertyValueFactory<>("identificacao"));
+       
         
         TableColumn<Reserva, String> colLivro = new TableColumn<>("Livro");
-        colLivro.setCellValueFactory( new PropertyValueFactory<>("livroNome"));
+        colLivro.setCellValueFactory( new PropertyValueFactory<>("nomeLivro"));
         
         TableColumn<Reserva, String> colStatus = new TableColumn<>("Status Reserva");
         colStatus.setCellValueFactory( new PropertyValueFactory<>("status"));
         
-        TableColumn<Reserva, String> colPessoa = new TableColumn<>("Nome");
-        colPessoa.setCellValueFactory( new PropertyValueFactory<>("nomePessoa"));
+        TableColumn<Reserva, String> colRa = new TableColumn<>("RA");
+        colRa.setCellValueFactory( new PropertyValueFactory<>("identRa"));
+        
+        TableColumn<Reserva, String> colReg = new TableColumn<>("Registro");
+        colReg.setCellValueFactory( new PropertyValueFactory<>("identReg"));
+        
+        TableColumn<Reserva, String> colDataRet = new TableColumn<>("Data de Retirada");
+        colDataRet.setCellValueFactory( new PropertyValueFactory<>("dataRetirada"));
+        
+        TableColumn<Reserva, String> colDataDev = new TableColumn<>("Data de Devolução");
+        colDataDev.setCellValueFactory( new PropertyValueFactory<>("dataDevolucao"));
+
 
 
         
@@ -80,6 +92,7 @@ public class FRMManterReserva implements Boundary{
                             control.excluir(r1);
                         });
                     }
+                    
                     public void updateItem(Void item, boolean empty) {
                         super.updateItem(item, empty);
                         if (empty) {
@@ -92,29 +105,39 @@ public class FRMManterReserva implements Boundary{
                 return tc;
             }
         };
-
+        
         table.getColumns().clear();
-        table.getColumns().addAll(colIdentificacao, colPessoa, colLivro, colStatus, colAcoes);
-        table.setItems( control.getLista() );
+        table.getColumns().addAll(colRa, colReg, colLivro, colStatus, colDataRet, colDataDev, colAcoes);
+        table.setItems( lista );
         colAcoes.setCellFactory( callback );
     }
-	
+	public void bind() { 
+		dtDev.valueProperty().bindBidirectional(control.pesquisaProperty());
+	}
 	@Override
 	public Pane render() {
+		control.atualizarLista();
 		
 		BorderPane panePrincipal = new BorderPane();
-        Scene scn = new Scene( panePrincipal, 500, 300);
         
         GridPane grid = new GridPane();
         grid.setHgap(10);
         grid.setVgap(10);
-        grid.add(identificacao, 2, 0);
-        grid.add(txtIdent, 2, 1);
+        grid.add(data, 2, 0);
+        grid.add(dtDev, 2, 1);
         grid.add(pesquisar, 2, 2);
         grid.add(cadastrar, 3, 2);
-        generateTable();
+        grid.add(redefinir, 4, 2);
+        bind();
+        generateTable(control.getLista());
         
         cadastrar.setOnAction(e -> executarComando("ABRIR CADRESERVA"));
+        pesquisar.setOnAction( e ->
+        {
+        	generateTable(control.pesquisarReserva());
+        });
+        
+        redefinir.setOnAction( e-> generateTable(control.getLista()));
         
         panePrincipal.setTop(grid);
         panePrincipal.setCenter( table );

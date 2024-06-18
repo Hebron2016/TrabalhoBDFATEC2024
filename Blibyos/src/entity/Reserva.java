@@ -9,7 +9,8 @@ public class Reserva {
 	private LocalDate dataDevolucao;
 	private LocalDate dataRetirada;
 	private String status;
-	private String identificacao;
+	private String identRa;
+	private String identReg;
 	private String nomeLivro;
 	
 	public int getId() {
@@ -40,17 +41,25 @@ public class Reserva {
 		this.status = status;
 	}
 	
-	public String getnomeLivro() {
+	public String getNomeLivro() {
 		return nomeLivro;
 	}
 	public void setnomeLivro(String nomeLivro) {
 		this.nomeLivro = nomeLivro;
 	}
-	public String getIdentificacao() {
-		return identificacao;
+	
+	
+	public String getIdentRa() {
+		return identRa;
 	}
-	public void setIdentificacao(String identificacao) {
-		this.identificacao = identificacao;
+	public void setIdentRa(String identRa) {
+		this.identRa = identRa;
+	}
+	public String getIdentReg() {
+		return identReg;
+	}
+	public void setIdentReg(String identReg) {
+		this.identReg = identReg;
 	}
 	
 }
