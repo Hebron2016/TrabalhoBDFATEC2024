@@ -9,6 +9,9 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import java.util.Map;
+
+import boundaryConsulta.FRMConsulta;
+
 import java.util.HashMap;
 
 
@@ -25,6 +28,7 @@ public class TelaInicial extends Application implements Executor{
 	private Boundary cadProfessor = new FRMCadProfessor();
 	private Boundary cadReserva = new FRMCadReserva();
 	private Boundary creditos = new Creditos();
+	private Boundary consulta = new FRMConsulta();
 	
 	private MenuBar menu = new MenuBar();
     private BorderPane bp = new BorderPane();
@@ -42,6 +46,7 @@ public class TelaInicial extends Application implements Executor{
 		cadProfessor.setExecutor(this);
 		cadReserva.setExecutor(this);
 		creditos.setExecutor(this);
+		consulta.setExecutor(this);
         telas.put("AUTOR", telaAutor);
         telas.put("ALUNO", telaAluno);
         telas.put("LIVRO", telaLivro);
@@ -53,6 +58,7 @@ public class TelaInicial extends Application implements Executor{
         telas.put("CADPROFESSOR", cadProfessor);
         telas.put("CADRESERVA", cadReserva);
         telas.put("CREDITOS", creditos);
+        telas.put("CONSULTA", consulta);
     }
 	
 	@Override
@@ -66,6 +72,7 @@ public class TelaInicial extends Application implements Executor{
 		Menu menuGerenciar = new Menu("Gerenciar");
 		Menu menuOpcao = new Menu("Opções");
 		Menu menuAjuda = new Menu("Ajuda");
+		Menu menuConsulta = new Menu("Consulta");
 		
 		MenuItem creditos = new MenuItem("Créditos");
 		MenuItem sair = new MenuItem("Sair");
@@ -74,14 +81,17 @@ public class TelaInicial extends Application implements Executor{
 		MenuItem livro = new MenuItem("Livros");
 		MenuItem professor = new MenuItem("Professores");
 		MenuItem reserva = new MenuItem("Reservas");
+		MenuItem consultar = new MenuItem("Consultas");
 		
 		menuAjuda.getItems().add(creditos);
+		menuConsulta.getItems().add(consultar);
 		menuGerenciar.getItems().addAll(aluno, autor, livro, professor, reserva);
 		menuOpcao.getItems().add(sair);
-		menu.getMenus().addAll(menuOpcao,menuGerenciar, menuAjuda);
+		menu.getMenus().addAll(menuOpcao,menuGerenciar, menuConsulta, menuAjuda);
 		
 		sair.setOnAction(e -> executar("SAIR"));
 		
+		consultar.setOnAction(e -> executar("ABRIR CONSULTA"));
 		creditos.setOnAction(e -> executar("ABRIR CREDITOS"));
 		reserva.setOnAction(e -> executar("ABRIR RESERVA"));
 		aluno.setOnAction(e -> executar("ABRIR ALUNO"));

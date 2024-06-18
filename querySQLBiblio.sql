@@ -23,7 +23,7 @@ CREATE TABLE autor(
 	
 	id		INT		IDENTITY,
 	nome	VARCHAR(70)		NOT NULL,
-	biografia	VARCHAR(140)	NOT NULL
+	biografia	VARCHAR(500)	NOT NULL
 
 	PRIMARY KEY(id)
 )
@@ -56,4 +56,4 @@ CREATE TABLE reserva(
 	FOREIGN KEY (identReg) REFERENCES professor(registro),
 	PRIMARY KEY(id)
 )
-SELECT * FROM aluno
+
